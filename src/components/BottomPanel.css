@@ -1,0 +1,151 @@
+.bottom-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-bg-secondary);
+  border-top: 1px solid var(--color-border-accent);
+  padding: 1rem;
+  gap: 2rem;
+  height: 60px;
+  min-height: 60px;
+}
+
+.control-buttons {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.control-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  font-family: var(--font-family-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  height: 32px;
+}
+
+.control-btn:hover {
+  border-color: var(--color-accent-primary);
+  color: var(--color-accent-primary);
+}
+
+.control-btn.active {
+  background-color: rgba(0, 255, 65, 0.1);
+  color: var(--color-accent-primary);
+  border-color: var(--color-accent-primary);
+  box-shadow: 0 0 12px rgba(0, 255, 65, 0.3);
+}
+
+.control-btn.secondary {
+  background-color: transparent;
+}
+
+.btn-icon {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+}
+
+.btn-text {
+  display: inline;
+}
+
+.status-info {
+  display: flex;
+  gap: 1.5rem;
+  margin-left: auto;
+  align-items: center;
+}
+
+.info-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.info-label {
+  font-size: 0.65rem;
+  font-family: var(--font-family-mono);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-value {
+  font-size: 0.875rem;
+  font-family: var(--font-family-mono);
+  color: var(--color-accent-primary);
+  font-weight: 600;
+}
+
+@media (max-width: 1200px) {
+  .bottom-panel {
+    padding: 0.75rem;
+    gap: 1rem;
+    height: 50px;
+    min-height: 50px;
+  }
+
+  .control-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.7rem;
+    height: 28px;
+  }
+
+  .btn-icon {
+    font-size: 0.875rem;
+  }
+
+  .status-info {
+    gap: 1rem;
+  }
+
+  .info-box {
+    gap: 0.125rem;
+  }
+
+  .info-label {
+    font-size: 0.6rem;
+  }
+
+  .info-value {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .status-info {
+    display: none;
+  }
+
+  .control-buttons {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .control-btn {
+    flex: 1;
+    justify-content: center;
+    font-size: 0.65rem;
+  }
+
+  .btn-text {
+    display: none;
+  }
+}

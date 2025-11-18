@@ -1,0 +1,219 @@
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg-primary);
+  border-left: 1px solid var(--color-border);
+  overflow: hidden;
+  user-select: none;
+}
+
+.panel-header {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg-secondary);
+}
+
+.panel-header h3 {
+  font-size: 0.875rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-accent-primary);
+  margin: 0;
+}
+
+.parameters-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.parameter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.param-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.param-header label {
+  font-family: var(--font-family-mono);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.param-value {
+  font-family: var(--font-family-mono);
+  color: var(--color-accent-primary);
+  font-weight: 600;
+  min-width: 30px;
+  text-align: right;
+}
+
+.param-slider-container {
+  position: relative;
+  height: 20px;
+}
+
+.param-slider {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  margin-top: -2px;
+  border-radius: 2px;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.param-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-accent-primary);
+  cursor: pointer;
+  box-shadow: 0 0 6px var(--color-accent-primary);
+  transition: all var(--transition-fast);
+}
+
+.param-slider::-webkit-slider-thumb:hover:not(:disabled) {
+  width: 14px;
+  height: 14px;
+  box-shadow: 0 0 12px var(--color-accent-primary);
+}
+
+.param-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-accent-primary);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 6px var(--color-accent-primary);
+  transition: all var(--transition-fast);
+}
+
+.param-slider::-moz-range-thumb:hover:not(:disabled) {
+  width: 14px;
+  height: 14px;
+  box-shadow: 0 0 12px var(--color-accent-primary);
+}
+
+.param-slider:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.param-slider:disabled::-webkit-slider-thumb {
+  box-shadow: 0 0 6px rgba(0, 255, 65, 0.3);
+}
+
+.param-value-bar {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 4px;
+  margin-top: -2px;
+  background: linear-gradient(90deg, var(--color-accent-primary), var(--color-accent-primary));
+  border-radius: 2px;
+  pointer-events: none;
+  opacity: 0.3;
+  transition: width 100ms ease-out;
+  z-index: 1;
+}
+
+.panel-footer {
+  padding: 0.75rem;
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-bg-secondary);
+}
+
+.preset-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.preset-btn {
+  padding: 0.5rem;
+  font-size: 0.7rem;
+  background-color: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.5px;
+}
+
+.preset-btn:hover {
+  border-color: var(--color-accent-primary);
+  color: var(--color-accent-primary);
+  box-shadow: 0 0 6px rgba(0, 255, 65, 0.1);
+}
+
+.preset-btn:active {
+  background-color: rgba(0, 255, 65, 0.1);
+}
+
+/* Scrollbar styling */
+.parameters-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.parameters-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.parameters-list::-webkit-scrollbar-thumb {
+  background: var(--color-accent-primary);
+  border-radius: 3px;
+  opacity: 0.5;
+}
+
+.parameters-list::-webkit-scrollbar-thumb:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 1024px) {
+  .panel-header h3 {
+    font-size: 0.8rem;
+  }
+
+  .parameters-list {
+    gap: 0.75rem;
+    padding: 0.5rem;
+  }
+
+  .param-header {
+    font-size: 0.7rem;
+  }
+
+  .param-slider {
+    height: 3px;
+  }
+
+  .param-slider::-webkit-slider-thumb {
+    width: 10px;
+    height: 10px;
+  }
+
+  .param-value-bar {
+    height: 3px;
+  }
+}
