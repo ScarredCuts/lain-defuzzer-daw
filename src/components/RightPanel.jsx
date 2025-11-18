@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './RightPanel.css'
 
 const parameterSets = {
   defuzzer: [
     { id: 'intensity', label: 'Intensity', value: 65, min: 0, max: 100 },
     { id: 'threshold', label: 'Threshold', value: 45, min: 0, max: 100 },
-    { id: 'sustain', label: 'Sustain', value: 55, min: 0, max: 100 },
+    { id: 'presence', label: 'Presence', value: 55, min: 0, max: 100 },
   ],
   harmonic: [
     { id: 'bass', label: 'Bass', value: 50, min: 0, max: 100 },
@@ -29,14 +29,32 @@ const parameterSets = {
   ],
 }
 
-export default function RightPanel({ selectedModule, isProcessing }) {
+export default function RightPanel({ selectedModule, isProcessing, onParameterChange, parameters }) {
   const params = parameterSets[selectedModule] || []
   const [values, setValues] = useState(
     params.reduce((acc, param) => ({ ...acc, [param.id]: param.value }), {})
   )
 
+  // Update local values when audio parameters change
+  useEffect(() => {
+    const updatedValues = {}
+    params.forEach((param) => {
+      if (parameters[param.id] !== undefined) {
+        updatedValues[param.id] = Math.round(parameters[param.id] * 100)
+      } else {
+        updatedValues[param.id] = param.value
+      }
+    })
+    setValues(updatedValues)
+  }, [parameters, params])
+
   const handleChange = (id, value) => {
-    setValues({ ...values, [id]: parseFloat(value) })
+    const newValue = parseFloat(value)
+    setValues({ ...values, [id]: newValue })
+    
+    if (onParameterChange) {
+      onParameterChange(id, newValue)
+    }
   }
 
   return (

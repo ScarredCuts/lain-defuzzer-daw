@@ -1,10 +1,34 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './MainProcessor.css'
 import Visualizer from './Visualizer'
 
-export default function MainProcessor({ isProcessing, selectedModule }) {
+export default function MainProcessor({ isProcessing, selectedModule, audioState, onParameterChange, parameters }) {
   const [inputLevel, setInputLevel] = useState(50)
   const [outputLevel, setOutputLevel] = useState(50)
+
+  // Update local state when audio parameters change
+  useEffect(() => {
+    if (parameters.inputLevel !== undefined) {
+      setInputLevel(Math.round(parameters.inputLevel * 100))
+    }
+    if (parameters.outputLevel !== undefined) {
+      setOutputLevel(Math.round(parameters.outputLevel * 100))
+    }
+  }, [parameters])
+
+  const handleInputChange = (value) => {
+    setInputLevel(value)
+    if (onParameterChange) {
+      onParameterChange('inputLevel', value)
+    }
+  }
+
+  const handleOutputChange = (value) => {
+    setOutputLevel(value)
+    if (onParameterChange) {
+      onParameterChange('outputLevel', value)
+    }
+  }
 
   const getModuleTitle = () => {
     const modules = {
@@ -17,13 +41,25 @@ export default function MainProcessor({ isProcessing, selectedModule }) {
     return modules[selectedModule] || 'Audio Processor'
   }
 
+  const getStatusText = () => {
+    if (!audioState?.isLoaded) return 'NO AUDIO LOADED'
+    if (audioState?.isPlaying) return 'PROCESSING'
+    return 'READY'
+  }
+
+  const getStatusClass = () => {
+    if (!audioState?.isLoaded) return 'inactive'
+    if (audioState?.isPlaying) return 'active'
+    return 'ready'
+  }
+
   return (
     <main className="main-processor">
       <div className="processor-header">
         <h2>{getModuleTitle()}</h2>
         <div className="processor-status">
-          <span className={`status-badge ${isProcessing ? 'active' : 'inactive'}`}>
-            {isProcessing ? '● PROCESSING' : '○ IDLE'}
+          <span className={`status-badge ${getStatusClass()}`}>
+            {getStatusText()}
           </span>
         </div>
       </div>
@@ -41,7 +77,7 @@ export default function MainProcessor({ isProcessing, selectedModule }) {
                 min="0"
                 max="100"
                 value={inputLevel}
-                onChange={(e) => setInputLevel(e.target.value)}
+                onChange={(e) => handleInputChange(e.target.value)}
                 className="slider"
               />
               <span className="level-value">{inputLevel}%</span>
@@ -57,7 +93,7 @@ export default function MainProcessor({ isProcessing, selectedModule }) {
                 min="0"
                 max="100"
                 value={outputLevel}
-                onChange={(e) => setOutputLevel(e.target.value)}
+                onChange={(e) => handleOutputChange(e.target.value)}
                 className="slider"
               />
               <span className="level-value">{outputLevel}%</span>
@@ -74,7 +110,13 @@ export default function MainProcessor({ isProcessing, selectedModule }) {
         <div className="info-line">
           <span>Signal:</span>
           <span className={isProcessing ? 'text-accent' : 'text-secondary'}>
-            {isProcessing ? 'PROCESSING' : 'IDLE'}
+            {getStatusText()}
+          </span>
+        </div>
+        <div className="info-line">
+          <span>Audio:</span>
+          <span className={audioState?.isLoaded ? 'text-accent' : 'text-secondary'}>
+            {audioState?.isLoaded ? 'LOADED' : 'NONE'}
           </span>
         </div>
       </div>

@@ -46,6 +46,13 @@
   animation: pulse-glow 1.5s infinite;
 }
 
+.status-badge.ready {
+  color: var(--color-accent-secondary);
+  border-color: var(--color-accent-secondary);
+  background-color: rgba(0, 153, 255, 0.05);
+  box-shadow: 0 0 4px rgba(0, 153, 255, 0.1);
+}
+
 .status-badge.inactive {
   color: var(--color-text-secondary);
   border-color: var(--color-border);
