@@ -3,6 +3,8 @@ import './Visualizer.css'
 
 export default function Visualizer({ isProcessing }) {
   const canvasRef = useRef(null)
+  const animationRef = useRef(null)
+  const analyserRef = useRef(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -19,7 +21,6 @@ export default function Visualizer({ isProcessing }) {
     const width = canvas.clientWidth
     const height = canvas.clientHeight
 
-    let animationId
     let phase = 0
 
     const drawVisualizer = () => {
@@ -56,9 +57,15 @@ export default function Visualizer({ isProcessing }) {
         const amplitude = height * 0.3
 
         for (let x = 0; x < width; x++) {
+          // Simulate processed audio with more complex waveform
           const sine = Math.sin((x * frequency) + phase)
-          const noise = (Math.random() - 0.5) * amplitude * 0.1
-          const y = (height / 2) + (sine * amplitude) + noise
+          const harmonic1 = Math.sin((x * frequency * 2) + phase * 1.5) * 0.3
+          const harmonic2 = Math.sin((x * frequency * 3) + phase * 2) * 0.1
+          const noise = (Math.random() - 0.5) * amplitude * 0.05
+          
+          // Simulate defuzzing effect - cleaner waveform
+          const processedNoise = noise * 0.3 // Reduced noise
+          const y = (height / 2) + (sine * amplitude) + (harmonic1 * amplitude * 0.5) + (harmonic2 * amplitude * 0.3) + processedNoise
 
           if (x === 0) {
             ctx.moveTo(x, y)
@@ -69,14 +76,32 @@ export default function Visualizer({ isProcessing }) {
 
         ctx.stroke()
 
-        // Draw harmonics
+        // Draw processed harmonics (cleaner)
         ctx.strokeStyle = 'rgba(0, 153, 255, 0.4)'
         ctx.lineWidth = 1
         ctx.beginPath()
 
         for (let x = 0; x < width; x++) {
           const harmonic = Math.sin((x * frequency * 2) + phase) * 0.5
-          const y = (height / 2) + (harmonic * amplitude * 0.5)
+          const y = (height / 2) + (harmonic * amplitude * 0.4) // Reduced amplitude for cleaner look
+
+          if (x === 0) {
+            ctx.moveTo(x, y)
+          } else {
+            ctx.lineTo(x, y)
+          }
+        }
+
+        ctx.stroke()
+
+        // Draw presence enhancement indicator
+        ctx.strokeStyle = 'rgba(255, 0, 255, 0.2)'
+        ctx.lineWidth = 1
+        ctx.beginPath()
+
+        for (let x = 0; x < width; x++) {
+          const presence = Math.sin((x * frequency * 4) + phase * 3) * 0.2
+          const y = (height / 2) + (presence * amplitude * 0.2)
 
           if (x === 0) {
             ctx.moveTo(x, y)
@@ -105,13 +130,15 @@ export default function Visualizer({ isProcessing }) {
         ctx.fillText('Press START to begin processing', width / 2, height / 2 + 15)
       }
 
-      animationId = requestAnimationFrame(drawVisualizer)
+      animationRef.current = requestAnimationFrame(drawVisualizer)
     }
 
     drawVisualizer()
 
     return () => {
-      cancelAnimationFrame(animationId)
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current)
+      }
     }
   }, [isProcessing])
 
